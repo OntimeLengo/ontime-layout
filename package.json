@@ -1,0 +1,77 @@
+{
+  "name": "ontime-layout",
+  "version": "1.0.0",
+  "description": "ontime-layout is used to generate any layouts from JSON using React components",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "jsnext:main": "dist/index.es.js",
+  "scripts": {
+    "test": "BABEL_ENV=test jest --watchAll --no-cache",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "build": "BABEL_ENV=build rollup -c",
+    "start": "BABEL_ENV=development rollup -c -w",
+    "lint": "eslint src --quiet",
+    "sass": "sass --watch src/scss/index.scss:dist/main.css",
+    "sassbuild": "sass src/scss/index.scss:dist/main.min.css --style compressed"
+  },
+  "keywords": [
+    "ontime",
+    "layout",
+    "react",
+    "reactjs",
+    "components"
+  ],
+  "author": "Olena Gotowska",
+  "license": "ISC",
+  "peerDependencies": {
+    "prop-types": "*",
+    "react": "*",
+    "react-dom": "*"
+  },
+  "devDependencies": {
+    "@storybook/addon-actions": "^3.4.5",
+    "@storybook/addon-links": "^3.4.5",
+    "@storybook/addons": "^3.4.5",
+    "@storybook/react": "^3.4.5",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.3",
+    "babel-jest": "^22.4.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-runtime": "^6.26.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.8.2",
+    "font-awesome": "^4.7.0",
+    "jest": "^22.4.3",
+    "prop-types": "^15.6.1",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-test-renderer": "^16.3.2",
+    "rollup": "^0.59.1",
+    "rollup-plugin-babel": "^3.0.4",
+    "rollup-plugin-commonjs": "^9.1.3",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-peer-deps-external": "^2.1.1",
+    "rollup-plugin-postcss": "^1.6.1",
+    "rollup-plugin-url": "^1.4.0",
+    "sinon": "^5.0.7",
+    "storybook-readme": "^3.3.0"
+  },
+  "dependencies": {},
+  "jest": {
+    "setupTestFrameworkScriptFile": "<rootDir>/src/tests/jest/config.js"
+  },
+  "files": [
+    "dist"
+  ]
+}

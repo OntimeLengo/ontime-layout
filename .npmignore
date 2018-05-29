@@ -1,0 +1,5 @@
+.git
+.sass-cache
+node_modules
+yarn-error.log
+src/_old
