@@ -2,6 +2,7 @@
   "name": "ontime-layout",
   "version": "1.0.0",
   "description": "ontime-layout is used to generate any layouts from JSON using React components",
+  "private": false,
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
@@ -18,12 +19,20 @@
   "keywords": [
     "ontime",
     "layout",
+    "engine",
     "react",
-    "reactjs",
-    "components"
+    "reactjs"
   ],
-  "author": "Olena Gotowska",
-  "license": "ISC",
+  "author": "OntimeLengo",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OntimeLengo/ontime-layout"
+  },
+  "bugs": {
+    "url": "https://github.com/OntimeLengo/ontime-layout/issues"
+  },
+  "homepage": "https://github.com/OntimeLengo/ontime-layout",
   "peerDependencies": {
     "prop-types": "*",
     "react": "*",

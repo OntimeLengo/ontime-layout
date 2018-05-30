@@ -1,5 +1,6 @@
 .git
 .sass-cache
+.storybook
 node_modules
 yarn-error.log
 src/_old
