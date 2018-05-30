@@ -16,6 +16,8 @@ yarn add ontime-layout
 
 Please see the storybook page where you are able to see and test all components with documentation and examples.
 
+[ontime-layout/storybook](https://ontimelengo.github.io/ontime-layout/)
+
 <h2>Credits</h2>
 
 ontime-layout is library to create and manage UI for React 16.
@@ -107,8 +109,9 @@ const data = [
 <Layout data={ data } />
 ```
 
-<strong>For From details please see storybook</strong>
-<strong>For Layout details please see storybook</strong>
+<strong>For From details please see [ontime-layout/storybook/form](https://ontimelengo.github.io/ontime-layout/index.html?selectedKind=Form&selectedStory=default)</strong>
+
+<strong>For Layout details please see [ontime-layout/storybook/layout](https://ontimelengo.github.io/ontime-layout/index.html?selectedKind=Layout&selectedStory=default)</strong>
 
 <strong>How to use validator</strong>
 
