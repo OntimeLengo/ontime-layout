@@ -229,7 +229,7 @@ export default class Form extends Component {
     try {
       await this.props.submit(this.data);
     } catch (error) {
-      errors = Object.assign({}, errors, err);
+      errors = Object.assign({}, errors);
     }
 
     await this.setState({errors: errors, loading: false});

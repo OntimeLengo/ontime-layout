@@ -1,11 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import sinon from 'sinon';
-import Layout from '../Layout';
+import * as components from 'ontime-components';
 
+import Layout from '../Layout';
 import { config } from '../../../';
 
-import * as components from 'ontime-components';
 
 for (let name in components) {
   if (!config.has('component', name)) {

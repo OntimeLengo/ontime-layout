@@ -1,6 +1,4 @@
-let defI18n = (key, options) => {
-  return key;
-};
+let defI18n = key => key;
 
 function gettext(key, options) {
   return defI18n(key, options);
