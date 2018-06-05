@@ -1,3 +1,8 @@
+import _regeneratorRuntime from 'babel-runtime/regenerator';
+import _Promise from 'babel-runtime/core-js/promise';
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import _createClass from 'babel-runtime/helpers/createClass';
+
 import store from './store';
 import transform from './transform';
 import Layout from './components/Layout';
