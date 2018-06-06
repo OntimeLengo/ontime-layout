@@ -33,6 +33,19 @@ You  are able to register only - component, function, class, object, exec
 * class - any class
 * object - any object
 * exec - any function which will we called after parse
+* pipeline - pipeline functionality 
+
+You should use pipeline only as an array. Where the first argument must be 'pipeline' and other arguments must be registered functions, objects etc.
+
+```javascript
+// pipeline example 
+props: {
+  onClick: ['pipeline', ['function/fn1', {a: 1}], 'function/fn2', 'function/fn3']
+}
+```
+When the user clicks on the element then the function 'function/fn1' will be called and the first argument will be an onClick event (Proxy) and the second argument will be an object {a: 1}. Result of the first function will be passed to the function 'function/fn2' and so on. All functions will be called like async functions.
+
+<strong>Register components, functions and abjects etc</strong>
 
 ```javascript
 import { Row, Input, Button } from 'ontime-components';

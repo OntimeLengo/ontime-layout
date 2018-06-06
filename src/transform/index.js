@@ -77,7 +77,34 @@ const transform = {
       return data;
     }
 
-    return (result.type === 'exec') ? result.res(...args) : result.res;
+    if (result.type === 'pipeline') {
+      let pipelineCalls = args.map(item => transform.convert(item));
+
+      return async (...pipeArgs) => {
+        let response = pipeArgs;
+
+        for (let i = 0; pipelineCalls[i]; i++) {
+          let fn = pipelineCalls[i];
+
+          if (typeof fn === 'function') {
+            if (i === 0) {
+              response = await fn(...response);
+            } else {
+              response = await fn(response);
+            }
+          } else {
+            throw new Error('transform/parse/pipeline: Argument must be a link to refistered function etc');
+          }
+        }
+      };
+    }
+
+    return (result.type === 'exec') ? result.res(...args) : async (...fnArgs) => {
+      const fn = result.res;
+      const fullArgs = [...fnArgs, ...args];
+
+      return await fn(...fullArgs);
+    };
   },
 
   /**
@@ -95,6 +122,10 @@ const transform = {
     const type = keys[0];
     const name = keys[1];
     const method = keys[2];
+
+    if (type === 'pipeline') {
+      return { type, res: null };
+    }
 
     if (!types.includes(type)) {
       throw new Error('transform/resource: Unknown resource type "' + type + '"');

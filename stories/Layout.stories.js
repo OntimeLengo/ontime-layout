@@ -29,6 +29,34 @@ if (!config.has('function', 'select-data')) {
   ]);
 }
 
+if (!config.has('function', 'fn1')) {
+  config.set('function', 'fn1', async (e, acc) => {
+    console.log('call fn1');
+
+    return acc + 10;
+  });
+}
+
+if (!config.has('function', 'fn2')) {
+  config.set('function', 'fn2', acc => {
+    console.log('call fn2');
+
+    return acc + 100;
+  });
+}
+
+if (!config.has('object', 'obj1')) {
+  const obj = {
+    test: function(acc) {
+      console.log('call obj1.test');
+      console.log('result ->', acc);
+      
+      return acc + 1000;
+    }
+  };
+  config.set('object', 'obj1', obj);
+}
+
 storiesOf('Layout', module)
   .add('default', withReadme(Readme, () => {
     const style = {padding: '20px'};
@@ -42,7 +70,8 @@ storiesOf('Layout', module)
             props: {
               name: 'name',
               label: 'test 1',
-              leftIcon: 'user'
+              leftIcon: 'user',
+              onClick: ['pipeline', ['function/fn1', 50], 'function/fn2', 'object/obj1/test']
             }
           },
           {
