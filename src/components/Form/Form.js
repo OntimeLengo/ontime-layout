@@ -107,8 +107,6 @@ export default class Form extends Component {
       this.data = Object.assign({}, data);
 
       await this.setState({loading: false});
-
-      console.log('fetched', this.data);
     }
   }
 
