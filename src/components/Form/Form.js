@@ -24,6 +24,7 @@ export default class Form extends Component {
 
   static propTypes = {
     data: PropTypes.object,
+    fetch: PropTypes.func,
     parser: PropTypes.func,
     schema: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
     disabled: PropTypes.bool,
@@ -65,6 +66,10 @@ export default class Form extends Component {
     return new Promise(resolve => super.setState(state, () => resolve()));
   }
 
+  componentDidMount() {
+    this.fetch();
+  }
+
   componentWillUnmount() {
     setTimeout(() => {
       this._parsed = false;
@@ -79,12 +84,43 @@ export default class Form extends Component {
       this._parsed = false;
       this.fields = {};
     }
+
+    if (nextProps.data !== this.props.data) {
+      this.data = Object.assign({}, nextProps.data);
+    }
+  }
+
+  async fetch() {
+    if (this.props.fetch) {
+      let data;
+
+      await this.setState({loading: true});
+
+      try {
+        data = await this.props.fetch();
+      } catch (error) {
+        await this.setState({loading: false});
+
+        return;
+      }
+
+      this.data = Object.assign({}, data);
+
+      await this.setState({loading: false});
+
+      console.log('fetched', this.data);
+    }
   }
 
   parser(data, components) {
     if (this._parsed) {
       // Set errors for fields
       this._components.listOfFields().forEach(item => {
+        // Set data value
+        if (this.data.hasOwnProperty(item.props.name)) {
+          item.props.value = this.data[item.props.name];
+        }
+        
         if (this.state.errors && this.state.errors[item.props.name]) {
           item.props.errors = this.state.errors[item.props.name];
         } else {
@@ -115,7 +151,7 @@ export default class Form extends Component {
         item.props.ref = c => (this.fields[item.props.name] = c);
 
         // Set data value
-        if (this.data[item.props.name]) {
+        if (this.data.hasOwnProperty(item.props.name)) {
           item.props.value = this.data[item.props.name];
         }
 

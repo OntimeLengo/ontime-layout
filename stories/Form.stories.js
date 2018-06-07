@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
@@ -34,6 +34,13 @@ function getSource() {
     {
       component: 'Row',
       children: [
+        {
+          component: 'Checkbox',
+          props: {
+            name: 'check',
+            label: 'Check'
+          }
+        },
         {
           component: 'Input',
           props: {
@@ -91,6 +98,56 @@ const confTranslate = {
 
 config.setI18n(k => confTranslate[k] || 'unknown key');
 
+
+class Test extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      data: {}
+    };
+  }
+
+  async setState(state) {
+    return new Promise(resolve => super.setState(state, () => resolve()));
+  }
+
+  componentDidMount() {
+    this.fetch();
+  }
+
+  async fetch() {
+    setTimeout(async () => {
+      await this.setState({data: {name: '123', email: 'test100@test.com', check: true}});
+    }, 1000);
+  }
+
+  getData() {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve({
+          name: '569', 
+          email: 'test200@test.com', 
+          check: false
+        });
+      }, 5000);
+    });
+  }
+
+  render() {
+    return (
+      <Form 
+        data={ this.state.data }
+        fetch={ this.getData.bind(this) }
+        schema={ getSource() }
+        submit={ action('submit') }
+      />
+    );
+  }
+
+}
+
 storiesOf('Form', module)
   .add('default', withReadme(Readme, () => {
     const style = {padding: '20px'};
@@ -108,6 +165,17 @@ storiesOf('Form', module)
             } }
             submit={ action('submit') }
           />
+        </div>
+      </React.Fragment>
+    );
+  }))
+  .add('set props data and after remote fetch', withReadme(Readme, () => {
+    const style = {padding: '20px'};
+
+    return (
+      <React.Fragment>
+        <div style={ style }>
+          <Test />
         </div>
       </React.Fragment>
     );

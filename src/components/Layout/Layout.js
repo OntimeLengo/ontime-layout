@@ -32,9 +32,7 @@ export default class Layout extends Component {
       let Comp = data.component;
       let children = null;
 
-      if ((idx >= 0) && !props.key) {
-        props.key = idx + 1;
-      }
+      props.key = ((props.name || '') + (props.value || '')) || (idx + 1);
 
       if (Array.isArray(data.children)) {
         children = this.renderData(data.children);
