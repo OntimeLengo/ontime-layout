@@ -7,6 +7,7 @@ import store from './store';
 import transform from './transform';
 import Layout from './components/Layout';
 import Form from './components/Form';
+import SimpleForm from './components/SimpleForm';
 import { validators, validator, config as setI18n } from './libs/validate';
 
 const config = {
@@ -42,6 +43,8 @@ function parse(...args) {
 }
 
 export {
+
+  SimpleForm,
 
   Form,
   
