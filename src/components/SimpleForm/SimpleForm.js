@@ -60,14 +60,15 @@ export default class SimpleForm extends Component {
 
   parse(children) {
     return React.Children.map(children, el => {
+      const elProps = el.props || {};
       const props = {};
 
       let cloneEl;
 
-      if (el.props.name && this.data.hasOwnProperty(el.props.name)) {
-        const name = el.props.name;
+      if (elProps.name && this.data.hasOwnProperty(elProps.name)) {
+        const name = elProps.name;
 
-        if (el.props.value !== this.data[name]) {
+        if (elProps.value !== this.data[name]) {
           id++;
 
           props.key = 'k-' + id;
@@ -103,13 +104,13 @@ export default class SimpleForm extends Component {
         }
       }
 
-      if (el.props.type === 'submit') {
+      if (elProps.type === 'submit') {
         props.loading = this.state.loading;
         props.disabled = this.state.loading;
       }
 
-      if (el.props.children) {
-        const cloneChildren = this.parse(el.props.children);
+      if (elProps.children) {
+        const cloneChildren = this.parse(elProps.children);
 
         cloneEl = React.cloneElement(el, props, ...cloneChildren);
       } else {
