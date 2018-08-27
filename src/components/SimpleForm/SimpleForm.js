@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Components from '../../libs/Components';
 
 async function validate() {
   return true;
@@ -13,10 +12,9 @@ async function submit() {
 let id = 1;
 
 /**
- * Class Form
+ * Class SimpleForm
  * 
  * @author Helen Gotovska
- * @created 24/08/2018
  */
 export default class SimpleForm extends Component {
 
@@ -87,27 +85,19 @@ export default class SimpleForm extends Component {
         }
 
         if (el.type.prototype && el.type.prototype.onChange && el.type.prototype.onBlur) {
-          let prevChange = props.onChange;
-          let prevBlur = props.onBlur;
+          let prevChange = elProps.onChange;
+          let prevBlur = elProps.onBlur;
 
           props.onChange = (...args) => {
             prevChange && prevChange(...args);
 
-            if (this.fields[name].type === 'checkbox') {
-              this.onChange(name, this.fields[name].checked, ...args);
-            } else {
-              this.onChange(name, this.fields[name].value, ...args);
-            }
+            this.onChange(name, this.fields[name].value, ...args);
           };
 
           props.onBlur = (...args) => {
             prevBlur && prevBlur(...args);
 
-            if (this.fields[name].type === 'checkbox') {
-              this.onBlur(name, this.fields[name].checked, ...args);
-            } else {
-              this.onBlur(name, this.fields[name].value, ...args);
-            }
+            this.onBlur(name, this.fields[name].value, ...args);
           };
         }
       }
