@@ -93,13 +93,21 @@ export default class SimpleForm extends Component {
           props.onChange = (...args) => {
             prevChange && prevChange(...args);
 
-            this.onChange(name, this.fields[name].value, ...args);
+            if (this.fields[name].type === 'checkbox') {
+              this.onChange(name, this.fields[name].checked, ...args);
+            } else {
+              this.onChange(name, this.fields[name].value, ...args);
+            }
           };
 
           props.onBlur = (...args) => {
             prevBlur && prevBlur(...args);
 
-            this.onBlur(name, this.fields[name].value, ...args);
+            if (this.fields[name].type === 'checkbox') {
+              this.onBlur(name, this.fields[name].checked, ...args);
+            } else {
+              this.onBlur(name, this.fields[name].value, ...args);
+            }
           };
         }
       }
