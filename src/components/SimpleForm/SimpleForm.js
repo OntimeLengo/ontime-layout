@@ -106,7 +106,6 @@ export default class SimpleForm extends Component {
 
       if (elProps.type === 'submit') {
         props.loading = this.state.loading;
-        props.disabled = this.state.loading;
       }
 
       if (elProps.children) {
