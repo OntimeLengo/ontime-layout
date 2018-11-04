@@ -17,8 +17,7 @@ async function submit() {
 /**
  * Class Form
  * 
- * @author Olena Gotovska
- * @created 27/05/2018
+ * @author Helen Gotovska
  */
 export default class Form extends Component {
 

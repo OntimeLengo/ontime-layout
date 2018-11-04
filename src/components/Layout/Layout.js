@@ -9,8 +9,7 @@ function parse(data, components) {
 /**
  * Class Layout
  * 
- * @author Olena Gotovska
- * @created 26/05/2018
+ * @author Helen Gotovska
  */
 export default class Layout extends Component {
 

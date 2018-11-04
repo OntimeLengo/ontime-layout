@@ -7,68 +7,11 @@ import { withReadme } from 'storybook-readme';
 
 import '../node_modules/ontime-components/dist/main.css';
 import '../dist/main.css';
-import { Input, Row, Button, Checkbox } from 'ontime-components';
+import { Container, Row, Input, Button } from 'ontime-components';
 
-import { config, SimpleForm, validator } from '../src';
+import { config, SimpleForm } from '../src';
 
-import Readme from '../src/components/Form/readme.md';
-
-if (!config.has('function', 'select-data')) {
-  config.set('function', 'select-data', async () => [
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5'
-  ]);
-}
-
-function getSource() {
-  return [
-    {
-      component: 'Row',
-      children: [
-        {
-          component: 'Checkbox',
-          props: {
-            name: 'check',
-            label: 'Check'
-          }
-        },
-        {
-          component: 'Input',
-          props: {
-            name: 'name',
-            label: 'User name',
-            leftIcon: 'user'
-          }
-        },
-        {
-          component: 'Input',
-          props: {
-            type: 'email',
-            name: 'email',
-            label: 'Email',
-            leftIcon: 'at'
-          }
-        }
-      ]
-    },
-    {
-      component: 'Row',
-      children: [
-        {
-          component: 'Button',
-          props: {
-            type: 'submit',
-            label: 'Save',
-            primary: true
-          }
-        }
-      ]
-    }
-  ];
-}
+import Readme from '../src/components/SimpleForm/readme.md';
 
 const confTranslate = {
   "validator.req": "This field is required",
@@ -95,59 +38,110 @@ config.setI18n(k => confTranslate[k] || 'unknown key');
 
 class Test extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
+
+    this.submit = this.submit.bind(this);
+    this.validate = this.validate.bind(this);
 
     this.state = {
-      data: {}
+      data: {firstName: '', lastName: ''}
     };
   }
 
-  async setState(state) {
-    return new Promise(resolve => super.setState(state, () => resolve()));
+  async submit(data) {
+    alert('You have just inputted firstName=' + data.firstName + ', lastName=' + data.lastName);
   }
 
-  componentDidMount() {
-    this.fetch();
-  }
+  async validate(data) {
+    const errors = {};
 
-  fetch() {
-    setTimeout(() => {
-      this.setState({data: {name: '123', email: 'test100@test.com', check: true}});
-    }, 1000);
+    if (!data.firstName) {
+      errors.firstName = [new Error('The First Name is required')];
+    }
+
+    if (!data.lastName) {
+      errors.lastName = [new Error('The Last Name is required')];
+    }
+
+    if (Object.keys(errors).length) {
+      throw errors;
+    }
   }
 
   render() {
-    const rules = {
-      name: {
-        req: true,
-        maxLen: 10
-      },
-      email: {
-        email: true,
-        req: true,
-        fn: function() {
-          return new Promise((resolve, reject) => {
-            setTimeout(() => {
-              resolve();
-              // reject(new Error('Custom Error'));
-            }, 200);
-          });
-        }
-      }
-    };
-
     return (
-      <SimpleForm data={ this.state.data } validate={ validator(rules) } submit={ action('submit') }>
+      <SimpleForm 
+        data={ this.state.data } 
+        validate={ this.validate }
+        submit={ this.submit }
+      >
         <Row>
-          <Checkbox name="check" label="Check" />
-          <Input name="name" label="User name" leftIcon="user" value="adasdasds" />
-          <Input type="email" name="email" label="Email" leftIcon="at" />
+          <Input name="firstName" required label="First Name" />
+          <Input name="lastName" required label="Last Name" />
         </Row>
+        <Container>
+          <Button type="submit" primary label="Click" />
+        </Container>
+      </SimpleForm>
+    );
+  }
+
+}
+
+class Test2 extends Component {
+
+  constructor() {
+    super();
+
+    this.fetch = this.fetch.bind(this);
+    this.submit = this.submit.bind(this);
+    this.validate = this.validate.bind(this);
+  }
+
+  async fetch() {
+    return new Promise(resolve => {
+      setTimeout(() => resolve({
+        firstName: 'John', 
+        lastName: 'Snow'
+      }), 500);
+    });
+  }
+
+  async submit(data) {
+    alert('You have just inputted firstName=' + data.firstName + ', lastName=' + data.lastName);
+  }
+
+  async validate(data) {
+    const errors = {};
+
+    if (!data.firstName) {
+      errors.firstName = [new Error('The First Name is required')];
+    }
+
+    if (!data.lastName) {
+      errors.lastName = [new Error('The Last Name is required')];
+    }
+
+    if (Object.keys(errors).length) {
+      throw errors;
+    }
+  }
+
+  render() {
+    return (
+      <SimpleForm 
+        fetch={ this.fetch }
+        validate={ this.validate }
+        submit={ this.submit }
+      >
         <Row>
-          <Button type="submit" label="Save" primary={ true } />
-          <Button label="Reset" />
+          <Input name="firstName" required label="First Name" />
+          <Input name="lastName" required label="Last Name" />
         </Row>
+        <Container>
+          <Button type="submit" primary label="Click" />
+        </Container>
       </SimpleForm>
     );
   }
@@ -155,13 +149,24 @@ class Test extends Component {
 }
 
 storiesOf('SimpleForm', module)
-  .add('set props data and after remote fetch', withReadme(Readme, () => {
-    const style = {padding: '20px'};
+  .add('default', withReadme(Readme, () => {
+    const style = {padding: '20px', width: '600px'};
 
     return (
       <React.Fragment>
         <div style={ style }>
           <Test />
+        </div>
+      </React.Fragment>
+    );
+  }))
+  .add('remove', withReadme(Readme, () => {
+    const style = {padding: '20px', width: '600px'};
+
+    return (
+      <React.Fragment>
+        <div style={ style }>
+          <Test2 />
         </div>
       </React.Fragment>
     );

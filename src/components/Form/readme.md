@@ -1,6 +1,6 @@
 <h1>Form</h1>
 
-The form is used to dynamically generate and manage any HTML form.
+The Form is used to dynamically generate and manage any HTML form.
 
 <h3>Props</h3>
 

@@ -43,6 +43,8 @@ export default class SimpleForm extends Component {
     this.data = Object.assign({}, this.props.data);
     this.fields = {};
 
+    this._reset = false;
+
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
@@ -58,6 +60,18 @@ export default class SimpleForm extends Component {
 
   parse(children) {
     return React.Children.map(children, el => {
+      if (!el) {
+        return null;
+      }
+
+      if (typeof el.type === 'string') {
+        if (el.props && el.props.children) {
+          this.parse(el.props.children);
+        }
+
+        return el;
+      }
+      
       const elProps = el.props || {};
       const props = {};
 
@@ -69,7 +83,7 @@ export default class SimpleForm extends Component {
         if (elProps.value !== this.data[name]) {
           id++;
 
-          props.key = 'k-' + id;
+          props.key = name || 'k-' + id;
 
           props.value = this.data[name];
         }
@@ -89,15 +103,21 @@ export default class SimpleForm extends Component {
           let prevBlur = elProps.onBlur;
 
           props.onChange = (...args) => {
-            prevChange && prevChange(...args);
+            if (this.fields && this.fields[name]) {
+              prevChange && prevChange(...args);
 
-            this.onChange(name, this.fields[name].value, ...args);
+              this.onChange(name, this.fields[name].value, ...args);
+            }
           };
 
           props.onBlur = (...args) => {
-            prevBlur && prevBlur(...args);
+            setTimeout(() => {
+              if (this.fields && this.fields[name]) {
+                prevBlur && prevBlur(...args);
 
-            this.onBlur(name, this.fields[name].value, ...args);
+                this.onBlur(name, this.fields[name].value, ...args);
+              }
+            }, 100);
           };
         }
       }
@@ -157,7 +177,29 @@ export default class SimpleForm extends Component {
     }
   }
 
+  reset() {
+    setTimeout(async () => {
+      this._reset = true;
+  
+      Object.keys(this.data).forEach(k => {
+        this.data[k] = '';
+      });
+  
+      Object.keys(this.fields).forEach(name => {
+        this.fields[name].value = '';
+      });
+  
+      await this.setState({reload: !this.state.reload, error: {}});
+  
+      this._reset = false;
+    }, 150);
+  }
+
   onChange(name, value, ...args) {
+    if (this._reset) {
+      return;
+    }
+
     if (this.props.disabled) {
       return;
     }
@@ -168,6 +210,10 @@ export default class SimpleForm extends Component {
   }
 
   async onBlur(name, value, ...args) {
+    if (this._reset) {
+      return;
+    }
+
     if (this.props.disabled) {
       return;
     }
@@ -222,8 +268,8 @@ export default class SimpleForm extends Component {
 
     try {
       await this.props.submit(this.data);
-    } catch (error) {
-      errors = Object.assign({}, errors);
+    } catch (err) {
+      errors = Object.assign({}, err);
     }
 
     await this.setState({errors: errors, loading: false});
